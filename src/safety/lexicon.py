@@ -48,17 +48,49 @@ HEDGING_PHRASES: tuple[str, ...] = (
     "you may want to consider",
 )
 
+# Internal RAG / prompt machinery — must never leak into user-facing answers.
+META_LANGUAGE_PHRASES: tuple[str, ...] = (
+    "chunk",
+    "chunks",
+    "provided context",
+    "the sources given",
+    "the provided",
+    "the passage",
+    "provided chunks",
+    "source chunks",
+    "retrieved context",
+    "context provided",
+    "in the context",
+    "given context",
+    "according to the context",
+)
+
 _BLOCKLIST_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
     re.compile(rf"(?<![a-z0-9]){re.escape(p)}(?![a-z0-9])", re.I)
     for p in (*ADVISORY_PHRASES, *HEDGING_PHRASES)
 )
 
+_META_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
+    re.compile(rf"(?<![a-z0-9]){re.escape(p)}(?![a-z0-9])", re.I)
+    for p in META_LANGUAGE_PHRASES
+)
+
 
 def find_lexicon_hits(text: str) -> list[str]:
-    """Return matched blocklist phrases (lowercased) found in text."""
+    """Return matched advisory/hedging blocklist phrases found in text."""
     hits: list[str] = []
     lowered = text or ""
     for pat, phrase in zip(_BLOCKLIST_PATTERNS, (*ADVISORY_PHRASES, *HEDGING_PHRASES)):
+        if pat.search(lowered):
+            hits.append(phrase)
+    return hits
+
+
+def find_meta_language_hits(text: str) -> list[str]:
+    """Return matched internal-machinery phrases that must not appear in answers."""
+    hits: list[str] = []
+    lowered = text or ""
+    for pat, phrase in zip(_META_PATTERNS, META_LANGUAGE_PHRASES):
         if pat.search(lowered):
             hits.append(phrase)
     return hits

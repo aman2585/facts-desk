@@ -15,7 +15,7 @@ from urllib.parse import urlparse
 import yaml
 
 from src.ingest.paths import CORPUS_PATH, ROOT
-from src.safety.lexicon import find_lexicon_hits
+from src.safety.lexicon import find_lexicon_hits, find_meta_language_hits
 
 # URL-ish tokens in answer body (http/https).
 _URL_RE = re.compile(r"https?://[^\s\]\)>\"']+", re.I)
@@ -195,6 +195,12 @@ def validate_answer(
     details["lexicon_hits"] = hits
     if hits:
         failed.append("advisory_lexicon")
+
+    # --- meta-language (internal machinery leak) ---
+    meta_hits = find_meta_language_hits(body_for_nums)
+    details["meta_language_hits"] = meta_hits
+    if meta_hits:
+        failed.append("meta_language")
 
     # Deduplicate while preserving order
     seen: set[str] = set()

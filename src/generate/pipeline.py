@@ -17,6 +17,7 @@ from src.generate.config import GenerateConfig, load_config
 from src.generate.generator import GenerationResult, generate_answer
 from src.generate.llm import LLMAPIError, LLMClient
 from src.retrieve.hybrid import Candidate
+from src.retrieve.normaliser import normalise_query
 from src.retrieve.pipeline import RetrievalResult, retrieve
 from src.retrieve.store import PublishedIndex, get_published_index
 from src.safety.intent import IntentResult, classify_intent
@@ -164,9 +165,11 @@ def ask(
         )
 
     chunk_dicts = _candidates_to_chunk_dicts(retrieval.chunks, published)
+    # Generation must see the same abbreviation expansion retrieval uses.
+    gen_query = normalise_query(intent.redacted_query).normalised
     try:
         generation = generate_answer(
-            intent.redacted_query,
+            gen_query,
             chunk_dicts,
             scheme_code=intent.scheme_code,
             cfg=config,

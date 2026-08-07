@@ -52,6 +52,13 @@
       "answer": "The expense ratio is 0.71%. I recommend holding for the long term.\n\nhttps://groww.in/mutual-funds/hdfc-mid-cap-fund-direct-growth",
       "expect_pass": false,
       "expect_failed_checks": ["advisory_lexicon"]
+    },
+    {
+      "id": "fail_meta_language_chunk",
+      "description": "Internal machinery leak (chunk / provided context)",
+      "answer": "The TER is not explicitly mentioned in the provided chunks, but the expense ratio is 0.71%.\n\nhttps://groww.in/mutual-funds/hdfc-mid-cap-fund-direct-growth",
+      "expect_pass": false,
+      "expect_failed_checks": ["meta_language"]
     }
   ]
 }

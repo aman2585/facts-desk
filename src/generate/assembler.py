@@ -14,6 +14,8 @@ from src.generate.validator import extract_urls
 from src.ingest.paths import CORPUS_PATH
 from src.safety.refusals import SCHEME_URLS, SafetyHandlerResult
 
+_URL_RE_INLINE = re.compile(r"https?://[^\s\]\)>\"']+", re.I)
+
 ResponseType = Literal[
     "answer",
     "refusal",
@@ -83,6 +85,17 @@ def format_freshness(fetched_at: str | None) -> str | None:
         return fetched_at[:10] if len(fetched_at) >= 10 else fetched_at
 
 
+def strip_urls_from_text(text: str) -> str:
+    """Remove http(s) URLs when a structured citation/scheme link already exists."""
+    if not text:
+        return ""
+    cleaned = _URL_RE_INLINE.sub(" ", text)
+    cleaned = re.sub(r"[ \t]+\n", "\n", cleaned)
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    cleaned = re.sub(r" +", " ", cleaned)
+    return cleaned.strip(" \t\n:;,-")
+
+
 def _answer_body(raw: str) -> str:
     """Strip trailing bare URL lines from model output for display body."""
     lines = (raw or "").splitlines()
@@ -90,6 +103,8 @@ def _answer_body(raw: str) -> str:
     for line in lines:
         stripped = line.strip()
         if extract_urls(stripped) and re.fullmatch(r"https?://\S+", stripped):
+            continue
+        if stripped.startswith("[Source:") or stripped.startswith("[Education]"):
             continue
         kept.append(line)
     return "\n".join(kept).strip()
@@ -114,6 +129,9 @@ def assemble_answer(
     authority = info.get("authority") or "Groww"
     freshness = format_freshness(fetched_at)
     body = _answer_body(raw_output)
+    # Citation chip carries the link — keep raw URL out of card text.
+    if url:
+        body = strip_urls_from_text(body)
 
     source_label = f"{authority} — {display_name}"
     parts = [body] if body else []
@@ -149,7 +167,11 @@ def assemble_safety(
         "pii_warn": "pii_warn",
     }
     rtype = kind_map.get(handler.kind, "refusal")
-    parts = [handler.text]
+    text = handler.text or ""
+    # Scheme / edu buttons carry links — strip any inlined URLs from card text.
+    if handler.scheme_url or handler.educational_url:
+        text = strip_urls_from_text(text)
+    parts = [text]
     if handler.educational_url:
         parts.append(f"[Education]({handler.educational_url})")
     if handler.scheme_url:
@@ -159,7 +181,7 @@ def assemble_safety(
         parts.append(f"[Source: Groww — {label}]({url})")
     return AssembledResponse(
         response_type=rtype,
-        text=handler.text,
+        text=text,
         citation_url=handler.scheme_url,
         educational_url=handler.educational_url,
         source_label=None,

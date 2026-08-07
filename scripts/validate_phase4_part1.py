@@ -68,6 +68,7 @@ def validate_validator_fixtures() -> None:
         "fail_non_allowlisted_url",
         "fail_number_not_verbatim",
         "fail_advisory_phrase",
+        "fail_meta_language_chunk",
     }
     found_ids = {f["id"] for f in data["fixtures"]}
     missing = required_ids - found_ids

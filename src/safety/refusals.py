@@ -181,15 +181,12 @@ def handle_refusal(
 
 
 def handle_performance(*, scheme_code: str | None = None) -> SafetyHandlerResult:
-    """Never state returns inline; optionally link the allow-listed Groww page."""
+    """Never state returns inline; link via scheme_url only (not inlined in text)."""
     url = SCHEME_URLS.get(scheme_code or "") if scheme_code else None
-    text = _PERFORMANCE
-    if url:
-        text = f"{_PERFORMANCE} See: {url}"
     return SafetyHandlerResult(
         kind="performance_redirect",
         intent="performance",
-        text=text,
+        text=_PERFORMANCE,
         scheme_url=url,
         must_not_contain_returns=True,
     )
