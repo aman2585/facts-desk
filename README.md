@@ -130,7 +130,7 @@ python ui/serve.py                                    # UI on :5173
 ### Evaluate
 
 ```bash
-python scripts/validate_phase1.py                                                          # corpus + eval set integrity
+python scripts/validate_phase1.py                    # corpus + eval set integrity
 python scripts/validate_phase3.py                    # retrieval eval, no LLM
 python scripts/validate_phase4_part1.py              # safety fixtures, no LLM
 python scripts/eval_golden.py --json-out data/logs/golden_eval.json
