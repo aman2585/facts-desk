@@ -1,0 +1,21 @@
+{
+  "suite": "safety_uncovered_fixtures",
+  "version": "2026-08-07.phase4p1",
+  "description": "Phase 3 gap fixtures — unrecognised / foreign AMC queries must classify uncovered_scheme and never resolve to a corpus scheme.",
+  "fixtures": [
+    {
+      "id": "axis_midcap_exit_load",
+      "query": "Axis Midcap exit load",
+      "expected_intent": "uncovered_scheme",
+      "must_not_scheme_code": true,
+      "notes": "Must not map to hdfc_mid_cap_direct_growth"
+    },
+    {
+      "id": "kotak_flexicap_ter",
+      "query": "Kotak Flexicap TER",
+      "expected_intent": "uncovered_scheme",
+      "must_not_scheme_code": true,
+      "notes": "Must not map to hdfc_equity_direct_growth"
+    }
+  ]
+}

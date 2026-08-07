@@ -1,0 +1,63 @@
+# Scheme alias map (draft) — Phase 1
+# Maps user phrasings → scheme_code used in corpus.yaml.
+# Matching should be case-insensitive; prefer longest alias match.
+
+aliases:
+  hdfc_mid_cap_direct_growth:
+    - hdfc mid cap fund direct growth
+    - hdfc mid cap fund
+    - hdfc mid cap
+    - hdfc midcap
+    - hdfc mid-cap
+    - mid cap fund
+    - midcap fund
+    - hdfc mid cap direct
+
+  hdfc_equity_direct_growth:
+    - hdfc equity fund direct growth
+    - hdfc equity fund
+    - hdfc equity
+    - hdfc flexi cap
+    - hdfc flexicap
+    - hdfc flexi-cap
+    - equity fund direct growth
+
+  hdfc_small_cap_direct_growth:
+    - hdfc small cap fund direct growth
+    - hdfc small cap fund
+    - hdfc small cap
+    - hdfc smallcap
+    - hdfc small-cap
+    - small cap fund
+    - smallcap fund
+    - hdfc small cap direct
+
+  hdfc_nifty_50_index_direct_growth:
+    - hdfc nifty 50 index fund direct growth
+    - hdfc nifty 50 index fund
+    - hdfc nifty 50
+    - hdfc nifty50
+    - hdfc index fund
+    - nifty 50 index fund
+    - nifty 50 index
+    - nifty 50
+    - nifty50
+    - hdfc nifty fifty
+
+  hdfc_balanced_advantage_direct_growth:
+    - hdfc balanced advantage fund direct growth
+    - hdfc balanced advantage fund
+    - hdfc balanced advantage
+    - hdfc baf
+    - balanced advantage fund
+    - balanced advantage
+    - baf
+    - hdfc dynamic asset allocation
+    - hdfc daa
+
+# Ambiguous short forms that must trigger clarification (do not auto-resolve alone)
+ambiguous_aliases:
+  - hdfc fund
+  - the hdfc scheme
+  - this fund
+  - that scheme

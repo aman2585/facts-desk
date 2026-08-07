@@ -1,0 +1,22 @@
+# Phase 4 generation — provider/model/temperature only.
+# Swap provider or model_id here without changing prompt or validator code.
+
+provider: groq
+model_id: llama-3.1-8b-instant
+temperature: 0.0
+max_tokens: 256
+
+# OpenAI-compatible chat completions base (Groq).
+api_base: https://api.groq.com/openai/v1
+api_key_env: GROQ_API_KEY
+
+# Soft timeout for a single completion call (seconds).
+timeout_s: 60
+
+# HTTP retries on 429 (and optionally 5xx) — exponential backoff.
+http_max_retries: 5
+http_retry_backoff_s: 1.0
+http_retry_backoff_max_s: 60.0
+
+# Pause between eval suite queries (seconds). Avoids bursting into 429s.
+eval_query_delay_s: 2.0

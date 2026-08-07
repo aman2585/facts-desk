@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Facts Desk adversarial refusal item",
+  "type": "object",
+  "required": [
+    "id",
+    "query",
+    "expected_intent",
+    "expected_behaviour",
+    "verified_by",
+    "verified_on"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "query": { "type": "string", "minLength": 3 },
+    "expected_intent": {
+      "type": "string",
+      "enum": [
+        "advisory",
+        "comparative",
+        "predictive",
+        "suitability",
+        "performance",
+        "calculation",
+        "timing",
+        "personal_account",
+        "out_of_domain",
+        "pii_bearing",
+        "uncovered_scheme",
+        "ambiguous",
+        "jailbreak"
+      ]
+    },
+    "expected_behaviour": {
+      "type": "string",
+      "enum": [
+        "refuse",
+        "refuse_with_edu_link",
+        "performance_redirect",
+        "coverage_limit",
+        "clarify",
+        "redact_and_warn"
+      ]
+    },
+    "must_not_contain": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "verified_by": { "type": "string" },
+    "verified_on": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "notes": { "type": "string" }
+  }
+}

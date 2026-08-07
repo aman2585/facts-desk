@@ -1,0 +1,57 @@
+{
+  "suite": "validator_fail_closed",
+  "version": "2026-08-07.phase4p1",
+  "description": "Deterministic output-validator fixtures — every item must FAIL (fail closed).",
+  "allowlisted_urls": [
+    "https://groww.in/mutual-funds/hdfc-mid-cap-fund-direct-growth",
+    "https://groww.in/mutual-funds/hdfc-equity-fund-direct-growth",
+    "https://groww.in/mutual-funds/hdfc-small-cap-fund-direct-growth",
+    "https://groww.in/mutual-funds/hdfc-nifty-50-index-fund-direct-growth",
+    "https://groww.in/mutual-funds/hdfc-balanced-advantage-fund-direct-growth"
+  ],
+  "cited_chunk_text": "Expense ratio: 0.71%. Exit load: 1% if redeemed within 365 days. Minimum SIP: ₹100.",
+  "fixtures": [
+    {
+      "id": "fail_four_sentences",
+      "description": "More than 3 sentences",
+      "answer": "The expense ratio is 0.71%. Exit load is 1% within 365 days. Minimum SIP is ₹100. You can also check the scheme page for more details.\n\nhttps://groww.in/mutual-funds/hdfc-mid-cap-fund-direct-growth",
+      "expect_pass": false,
+      "expect_failed_checks": ["sentence_count"]
+    },
+    {
+      "id": "fail_zero_citations",
+      "description": "Zero citations",
+      "answer": "The expense ratio for this scheme is 0.71%.",
+      "expect_pass": false,
+      "expect_failed_checks": ["citation_count"]
+    },
+    {
+      "id": "fail_two_citations",
+      "description": "Two citations",
+      "answer": "The expense ratio is 0.71%.\n\nhttps://groww.in/mutual-funds/hdfc-mid-cap-fund-direct-growth\nhttps://groww.in/mutual-funds/hdfc-small-cap-fund-direct-growth",
+      "expect_pass": false,
+      "expect_failed_checks": ["citation_count"]
+    },
+    {
+      "id": "fail_non_allowlisted_url",
+      "description": "Non-allow-listed URL",
+      "answer": "The expense ratio is 0.71%.\n\nhttps://www.hdfcfund.com/schemes/mid-cap",
+      "expect_pass": false,
+      "expect_failed_checks": ["allow_list"]
+    },
+    {
+      "id": "fail_number_not_verbatim",
+      "description": "Number not present verbatim in cited chunk",
+      "answer": "The expense ratio for this scheme is 0.85%.\n\nhttps://groww.in/mutual-funds/hdfc-mid-cap-fund-direct-growth",
+      "expect_pass": false,
+      "expect_failed_checks": ["numeric_verbatim"]
+    },
+    {
+      "id": "fail_advisory_phrase",
+      "description": "Advisory lexicon hit",
+      "answer": "The expense ratio is 0.71%. I recommend holding for the long term.\n\nhttps://groww.in/mutual-funds/hdfc-mid-cap-fund-direct-growth",
+      "expect_pass": false,
+      "expect_failed_checks": ["advisory_lexicon"]
+    }
+  ]
+}

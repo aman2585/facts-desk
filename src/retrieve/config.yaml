@@ -1,0 +1,21 @@
+# Phase 3 retrieval config — tunable τ; do not silently bake eval-tuned values.
+#
+# Scores come from CrossEncoder (BAAI/bge-reranker-base): higher = more relevant.
+# Default τ is a conservative starting point; use scripts/validate_phase3.py
+# tau sweep to observe behaviour. Do not change τ solely to green-wash metrics.
+
+embedding_model: "BAAI/bge-large-en-v1.5"
+reranker_model: "BAAI/bge-reranker-base"
+
+dense_top_k: 20
+bm25_top_k: 20
+rerank_top_k: 5
+
+# Confidence gate: if top rerank score < tau → gate_fail (coverage gap)
+tau: 0.0
+
+# When scheme is unresolved, treat top hits as ambiguous if they span
+# this many distinct scheme_codes among the gated top results.
+ambiguity_min_schemes: 2
+
+plan_default: "Direct"

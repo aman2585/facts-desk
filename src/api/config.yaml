@@ -1,0 +1,22 @@
+# Phase 5 API — rate limits, cache, audit (swappable without code changes).
+
+# Sliding-window rate limits (F6.6).
+rate_limit:
+  session_max_requests: 30
+  session_window_s: 60
+  ip_max_requests: 60
+  ip_window_s: 60
+
+# Response cache (F3.5): key = sha256(normalised_redacted_query + "|" + corpus_version)
+cache:
+  enabled: true
+  # Relative to data/; wiped when published corpus_version changes.
+  dir: cache/responses
+
+# Audit log (F6.5 / reconstructable trace for F8.1 feedback linkage).
+audit:
+  dir: logs/audit
+  # JSONL files named audit_YYYY-MM-DD.jsonl
+
+# Streaming default for POST /ask (SSE). Clients may set stream=false for JSON.
+stream_default: true

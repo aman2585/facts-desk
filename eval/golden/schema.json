@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Facts Desk golden eval item",
+  "type": "object",
+  "required": [
+    "id",
+    "query",
+    "verified_answer",
+    "expected_source_id",
+    "intent",
+    "verified_by",
+    "verified_on"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "query": { "type": "string", "minLength": 3 },
+    "verified_answer": { "type": "string", "minLength": 1 },
+    "expected_source_id": {
+      "type": "string",
+      "enum": ["src_001", "src_002", "src_003", "src_004", "src_005"]
+    },
+    "intent": {
+      "type": "string",
+      "enum": [
+        "expense_ratio",
+        "exit_load",
+        "min_sip",
+        "min_additional",
+        "lock_in",
+        "riskometer",
+        "benchmark",
+        "category",
+        "fund_manager",
+        "plan_option",
+        "aum",
+        "definition_on_page"
+      ]
+    },
+    "scheme_code": { "type": "string" },
+    "verification_status": {
+      "type": "string",
+      "enum": ["stub_pending_page_verify", "human_verified"]
+    },
+    "verified_by": { "type": "string" },
+    "verified_on": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "notes": { "type": "string" }
+  }
+}
