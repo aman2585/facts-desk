@@ -3,3 +3,10 @@ __pycache__/
 *.pyc
 .env
 *.egg-info/
+
+.venv/
+venv/
+*.log
+audit/
+.hf-cache/
+*.sqlite3
